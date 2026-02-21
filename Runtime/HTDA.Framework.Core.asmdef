@@ -1,6 +1,6 @@
 {
-  "name": "HTDA.Framework.Template",
-  "rootNamespace": "HTDA.Framework.Template",
+  "name": "HTDA.Framework.Core",
+  "rootNamespace": "HTDA.Framework.Core",
   "references": [],
   "includePlatforms": [],
   "excludePlatforms": [],

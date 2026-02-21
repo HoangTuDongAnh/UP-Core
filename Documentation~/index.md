@@ -1,9 +1,16 @@
-# HTDA Framework – Template
+# HTDA Framework – Core
 
-This is the documentation entry point for the package.
+Core provides minimal, stable building blocks used by most HTDA modules.
 
-After running `Tools/setup_wizard.py`, update this documentation to describe:
-- Purpose
-- Installation / dependencies
-- Public API
-- Examples
+## Scope
+- Logging facade (pluggable sink)
+- Result primitives
+- Guard validation
+- Minimal lifecycle contracts
+- Small type-based event bus
+
+## Design Rules
+- Keep Core small and stable
+- Avoid feature creep
+- Editor-only utilities belong to Tier 2
+- Patterns/Utilities belong to Tier 1
