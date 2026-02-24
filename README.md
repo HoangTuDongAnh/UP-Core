@@ -1,19 +1,62 @@
-# HTDA Framework – Core
+# UP-Core (HTDA.Framework.Core)
 
-Core is the foundation of HTDA Framework.
+UP-Core là nền tảng dùng chung cho toàn bộ framework: log/diagnostics, lifecycle primitives và các pattern nhẹ (Singleton/Command/Service/Factory/Strategy/Decorator).
 
-## Package Info
-- Package: `com.htda.framework.core`
-- Assembly: `HTDA.Framework.Core`
-- Unity: `2022.3+`
+## Thành phần chính
 
-## Included
-- Framework identity: `CoreInfo`
-- Logging facade: `HTDALog`, `ILogSink`, `UnityLogSink`
-- Result types: `Result`, `Result<T>`
-- Guard utilities: `Guard`
-- Lifecycle contracts: `IInitializable`, `ITickable`, `IShutdown`
-- Minimal event bus: `IEventBus`, `EventBus`
+- **Diagnostics**
+    - `HTDALog`, `ILogSink`, `UnityLogSink`
+- **LifeCycle**
+    - `IInitializable`, `ITickable`, `IShutdown`
+    - Singleton:
+        - `Singleton<T>` (pure C#)
+        - `MonoSingleton<T>`
+        - `PersistentMonoSingleton<T>`
+- **Primitives**
+    - Command:
+        - `ICommand`, `CommandHistory`, `CompositeCommand`
+    - Service:
+        - `ServiceRegistry`
+    - Factory:
+        - `IFactory<T>`, `IFactory<TIn,TOut>`, `FactoryRegistry<TKey,T>`
+    - Strategy:
+        - `IStrategy<TContext,TResult>`, `StrategySelector<TContext,TResult>`
+    - Decorator:
+        - `IDecorator<T>`, `DecoratorChain<T>`
 
-## Not included (by design)
-No pooling, state machines, IO helpers, editor tools, or feature-heavy utilities.
+## Cài đặt
+
+Add package local / git như bình thường. UP-Core không có Sample.
+
+## Ví dụ nhanh
+
+### Singleton (Mono)
+```csharp
+public sealed class AudioManager : PersistentMonoSingleton<AudioManager>
+{
+    protected override void OnSingletonAwake()
+    {
+        // init
+    }
+}
+```
+
+### Command (Undo/Redo)
+```csharp
+var history = new CommandHistory();
+history.Do(new SwapTilesCommand(board, a, b));
+history.Undo();
+history.Redo();
+```
+
+### ServiceRegistry (khuyên dùng cho bootstrap)
+```csharp
+var services = new ServiceRegistry();
+services.Register<ISceneLoader>(loader);
+var sceneLoader = services.Get<ISceneLoader>();
+```
+
+## Notes
+
+- UP-Core cố tình **tối giản**, không DI container nặng, không MVP framework.
+- Các module khác (Events/Pooling/FSM/SceneFlow) nên reference UP-Core để dùng primitives.
